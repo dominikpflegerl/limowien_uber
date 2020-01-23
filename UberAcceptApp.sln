@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UberAcceptApp", "UberAcceptApp.csproj", "{6DF524DB-5AE3-46EC-85F1-9F666778A0FE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6DF524DB-5AE3-46EC-85F1-9F666778A0FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DF524DB-5AE3-46EC-85F1-9F666778A0FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DF524DB-5AE3-46EC-85F1-9F666778A0FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DF524DB-5AE3-46EC-85F1-9F666778A0FE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {52753915-AF22-4994-9BCC-D209F953CDFE}
+	EndGlobalSection
+EndGlobal
