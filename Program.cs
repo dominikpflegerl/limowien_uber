@@ -43,7 +43,8 @@ namespace UberAcceptApp {
 
         private static void UberAcceptButton(ChromeDriver driver) {
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-            IWebElement button = driver.FindElement(By.XPath("/html/body/div/div/div[3]/div[1]/div[1]/div/button"));
+            //IWebElement button = driver.FindElement(By.XPath("/html/body/div/div/div[3]/div[1]/div[1]/div/button"));
+            IWebElement button = driver.FindElement(By.XPath("/html/body/div/div/div[3]/div[1]/div[2]/table/tbody/tr/td[1]/button"));
             bool status = button.Enabled;
             if (status) {
                 button.Click();
@@ -67,11 +68,8 @@ namespace UberAcceptApp {
 
         private static void ConsoleWriteAccept() {
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            //using (StreamWriter w = File.AppendText(@"C:\inetpub\www\uber\rides.txt")) {
-            using (StreamWriter w = File.AppendText(@".\\rides.txt")) {
-                Log(w);
-                Console.Write(DateTime.Now.ToString("dd/MM/yyyy HH:mm") + " | Ride accepted");
-            }
+            Console.Write(DateTime.Now.ToString("dd/MM/yyyy HH:mm") + " | Ride accepted");
+            using (StreamWriter w = File.AppendText(@".\\rides.txt")) { Log(w); }
             Console.ResetColor();
         }
 
@@ -89,6 +87,7 @@ namespace UberAcceptApp {
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
 
             try {
+                Thread.Sleep(1000);
                 client.Send(message);
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine (" | Mail sent!");
