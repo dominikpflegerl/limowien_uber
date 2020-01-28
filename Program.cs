@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 
 using System;
 using System.IO;
@@ -23,7 +24,7 @@ namespace UberAcceptApp {
 
 
             while (true) {
-                UberAcceptButton(driver);
+                UberAcceptAllButton(driver);
                 //TestSample(driver);
             }
         }
@@ -41,10 +42,10 @@ namespace UberAcceptApp {
             return driver;
         }
 
-        private static void UberAcceptButton(ChromeDriver driver) {
+        private static void UberAcceptAllButton(ChromeDriver driver) {
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-            //IWebElement button = driver.FindElement(By.XPath("/html/body/div/div/div[3]/div[1]/div[1]/div/button"));
-            IWebElement button = driver.FindElement(By.XPath("/html/body/div/div/div[3]/div[1]/div[2]/table/tbody/tr/td[1]/button"));
+            IWebElement button = driver.FindElement(By.XPath("/html/body/div/div/div[3]/div[1]/div[1]/div/button"));
+
             bool status = button.Enabled;
             if (status) {
                 button.Click();
@@ -52,7 +53,19 @@ namespace UberAcceptApp {
                 SendAcceptMail();
                 Thread.Sleep(5000);
             }
-        }        
+        }    
+        
+        private static void UberAcceptButton(ChromeDriver driver) {
+            IWebElement button = driver.FindElementByXPath("/html/body/div/div/div[3]/div[1]/div[2]/table/tbody/tr/td[1]/button");
+            bool status = button.Displayed;
+            if (status) {
+                button.Click();
+                ConsoleWriteAccept();
+                SendAcceptMail();
+                Thread.Sleep(5000);
+            }
+
+        }
         
         private static void TestSample(ChromeDriver driver) { // computerbase.de
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
@@ -77,14 +90,16 @@ namespace UberAcceptApp {
             string from = "office@limowien.com";
             string to = "uber@limowien.com";
 
-            MailMessage message = new MailMessage(from, to);
-            message.Subject = "Anfrage Beförderungswunsch | ACCEPTED @ " + DateTime.Now.ToString("HH:mm");
-            //message.Body = @"Using this new feature, you can send an email message from an application very easily.";
+            MailMessage message = new MailMessage(from, to) {
+                Subject = "Anfrage Beförderungswunsch | ACCEPTED @ " + DateTime.Now.ToString("HH:mm"),
+                //Body = "Anfrage angenommen!"
+            };
 
-            SmtpClient client = new SmtpClient("w00c7f84.kasserver.com");
-            client.UseDefaultCredentials = false;
-            client.Credentials = new System.Net.NetworkCredential("office@limowien.com", "#planetn0travel!");
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            SmtpClient client = new SmtpClient("w00c7f84.kasserver.com") {
+                UseDefaultCredentials = false,
+                Credentials = new System.Net.NetworkCredential("office@limowien.com", "#planetn0travel!"),
+                DeliveryMethod = SmtpDeliveryMethod.Network
+            };
 
             try {
                 Thread.Sleep(1000);
