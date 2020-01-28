@@ -4,6 +4,7 @@ using OpenQA.Selenium.Chrome;
 using System;
 using System.IO;
 using System.Threading;
+using System.Net.Mail;
 
 namespace UberAcceptApp {
 
@@ -15,14 +16,15 @@ namespace UberAcceptApp {
 
             ChromeDriver driver = ChromeLaunch();
 
-            //driver.Navigate().GoToUrl("https://vsdispatch.uber.com");
-            driver.Navigate().GoToUrl("https://www.computerbase.de/");
+            driver.Navigate().GoToUrl("https://vsdispatch.uber.com");
+            //driver.Navigate().GoToUrl("https://www.computerbase.de/");
             driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(2);
             ConsoleStartTime();
 
+
             while (true) {
-                //UberAcceptButton(driver);
-                TestSample(driver);
+                UberAcceptButton(driver);
+                //TestSample(driver);
             }
         }
 
@@ -46,6 +48,7 @@ namespace UberAcceptApp {
             if (status) {
                 button.Click();
                 ConsoleWriteAccept();
+                SendAcceptMail();
                 Thread.Sleep(5000);
             }
         }        
@@ -57,7 +60,8 @@ namespace UberAcceptApp {
             if (status) {
                 button.Click();
                 ConsoleWriteAccept();
-                Thread.Sleep(5000);
+                SendAcceptMail();
+                Thread.Sleep(25000);
             }
         }
 
@@ -66,9 +70,37 @@ namespace UberAcceptApp {
             //using (StreamWriter w = File.AppendText(@"C:\inetpub\www\uber\rides.txt")) {
             using (StreamWriter w = File.AppendText(@".\\rides.txt")) {
                 Log(w);
-                Console.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm") + " | Ride accepted");
+                Console.Write(DateTime.Now.ToString("dd/MM/yyyy HH:mm") + " | Ride accepted");
             }
             Console.ResetColor();
+        }
+
+        private static void SendAcceptMail() {
+            string from = "office@limowien.com";
+            string to = "uber@limowien.com";
+
+            MailMessage message = new MailMessage(from, to);
+            message.Subject = "Anfrage Beförderungswunsch | ACCEPTED @ " + DateTime.Now.ToString("HH:mm");
+            //message.Body = @"Using this new feature, you can send an email message from an application very easily.";
+
+            SmtpClient client = new SmtpClient("w00c7f84.kasserver.com");
+            client.UseDefaultCredentials = false;
+            client.Credentials = new System.Net.NetworkCredential("office@limowien.com", "#planetn0travel!");
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+            try {
+                client.Send(message);
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine (" | Mail sent!");
+                Console.ResetColor();
+            }
+            catch (Exception ex) {
+                Console.BackgroundColor = ConsoleColor.DarkRed;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Exception caught in MailSendAccept(): {0}",
+                    ex.ToString());
+                Console.ResetColor();
+            }
         }
 
         private static void ConsoleStartTime() {
